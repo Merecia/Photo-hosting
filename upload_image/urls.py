@@ -1,4 +1,4 @@
-from django.urls import include, re_path
+from django.urls import path, re_path, include
 
 from imageshare import views
 from imageshare.models import Image
@@ -14,4 +14,5 @@ urlpatterns = [
         views.ImageView.as_view(), 
         name='detail'
     ),
+    path("imageshare/", include('imageshare.urls'))
 ]
