@@ -1,12 +1,9 @@
 from django.views.generic import DetailView
 from django.views.generic.edit import CreateView
 from django.shortcuts import render
-from django.http import HttpResponse
 from django.shortcuts import redirect
 from .tasks import save_image_task
 from django.urls import reverse
-from asgiref.sync import sync_to_async
-from asgiref.sync import async_to_sync, sync_to_async
 import string
 import random
 import asyncio
@@ -24,12 +21,31 @@ class ImageView(DetailView):
 class UploadView(CreateView):
     model = Image
     fields = ['image']
+
+    @classmethod
+    def as_view(cls, **initkwargs):
+        view = super().as_view(**initkwargs)
+        view._is_coroutine = asyncio.coroutines._is_coroutine
+        return view
     
-    def form_valid(self, form):
-        image = form.cleaned_data['image']
+    async def get(self, request, *args, **kwargs):
+        self.object = None
+        return super().get(request, *args, **kwargs)
+
+    async def put(self, request, *args, **kwargs):
+        self.object = None
+        return super().get(request, *args, **kwargs)
+    
+    async def delete(self, request, *args, **kwargs):
+        self.object = None
+        return super().get(request, *args, **kwargs)
+
+    async def post(self, request):
+        form = request.POST
+        image = form['image']
         slug = ''.join(random.sample(string.ascii_lowercase, 6))
         save_image_task.delay(image, slug)
         return redirect(reverse('detail', args=(slug,)))
 
-    def form_invalid(self, form):
+    async def form_invalid(self):
         return redirect(reverse('index'))

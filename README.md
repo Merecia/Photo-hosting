@@ -12,8 +12,8 @@ Install all necessary dependencies on the virtual machine
  >
  >pip install celery
 
-Start the server
- >py manage.py runserver
-
-In another terminal, run celery
+Run celery in this terminal
  >celery -A upload_image worker -l info --pool=solo
+
+In another terminal, start the server
+ >py manage.py runserver

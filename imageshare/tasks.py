@@ -5,4 +5,5 @@ from .models import Image
 def save_image_task(image_url, slug):
    image = Image(image = image_url, slug = slug)
    image.save()
-   print('image saved to db '+ image_url)
+   print ('Image slug: ' + slug)
+   print('Image full link: ' + image_url)
