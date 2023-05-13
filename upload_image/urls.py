@@ -6,7 +6,7 @@ from imageshare.models import Image
 urlpatterns = [
     re_path(
         r'^$', 
-        views.UploadView.as_view(fields='__all__'), 
+        views.UploadView.as_view(), 
         name='index'
     ),
     re_path(
