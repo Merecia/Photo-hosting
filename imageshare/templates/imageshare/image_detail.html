@@ -8,7 +8,7 @@
 
 	<div class="float-info">
 		<p>
-			<b>Filename</b>: {{ image.image.info.file_name }}<br>
+			<b>Filename</b>: {{ image.image.info.original_filename }}<br>
 			<b>Uploaded</b>: {{ image.image.info.datetime_uploaded|slice:":10" }}<br>
 			<b>Original size</b>: {{ image.image.info.size|filesizeformat }}<br>
 		</p>

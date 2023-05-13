@@ -2,11 +2,8 @@ from pyuploadcare.dj.models import ImageField
 from django.db import models
 from django.urls import reverse
 from django.core.exceptions import ValidationError
-#from .tasks import get_slug
-from .tasks import add
 import string
 import random
-import json
 
 def minimum_size(min_width=None, min_height=None):
     def validator(image):
@@ -34,11 +31,8 @@ class Image(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            self.slug = ''.join(random.sample(string.ascii_lowercase, 6))
-        
-        add.delay(2,5)
+           self.slug = ''.join(random.sample(string.ascii_lowercase, 6))
         super(Image, self).save(*args, **kwargs)
-            
-        
+
     def get_absolute_url(self):
         return reverse('detail', args=(self.slug,))

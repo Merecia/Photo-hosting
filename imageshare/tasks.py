@@ -1,9 +1,8 @@
-from __future__ import absolute_import, unicode_literals
-import string
-import random
-from imageshare.models import *
 from celery import shared_task
+from .models import Image
 
 @shared_task
-def add(x, y):
-    return x + y
+def save_image_task(image_url, slug):
+   image = Image(image = image_url, slug = slug)
+   image.save()
+   print('image saved to db '+ image_url)
